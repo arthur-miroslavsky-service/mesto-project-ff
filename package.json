@@ -4,7 +4,8 @@
   "description": "educational project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --mode production",
+    "dev": "webpack serve --open"
   },
   "repository": {
     "type": "git",
@@ -13,8 +14,17 @@
   "author": "Arthur Miroslavsky",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
+    "autoprefixer": "^10.4.21",
+    "babel-loader": "^10.0.0",
+    "cssnano": "^7.1.1",
+    "postcss-loader": "^8.2.0",
     "webpack": "^5.101.3",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2"
+  },
+  "dependencies": {
+    "core-js": "^3.45.1"
   }
 }
