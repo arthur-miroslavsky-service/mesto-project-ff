@@ -1,31 +1,39 @@
-// Темплейт карточки
-const cardTemplate = document
-	.querySelector("#card-template")
-	.content.querySelector(".places__item");
+const createCardElement = (params) => {
+	const {
+		cardTemplate,
+		cardSelectors = {},
+		cardData = {},
+		cardHandlers = {},
+	} = params;
 
-// DOM узлы
-const placesWrap = document.querySelector(".places__list");
+	if (!(cardTemplate instanceof HTMLElement)) {
+		throw new Error("Incorrect type of cardTemplate element");
+	}
 
-function createCardElement(data, onDelete) {
 	const cardElement = cardTemplate.cloneNode(true);
-	const deleteButton = cardElement.querySelector(".card__delete-button");
 
-	const cardImage = cardElement.querySelector(".card__image");
-	cardImage.src = data.link;
-	cardImage.alt = data.name;
+	const deleteButton = cardElement.querySelector(cardSelectors.deleteButton);
+	const cardImage = cardElement.querySelector(cardSelectors.cardImage);
+	const cardTitle = cardElement.querySelector(cardSelectors.cardTitle);
 
-	cardElement.querySelector(".card__title").textContent = data.name;
+	if (cardImage) {
+		cardImage.src = cardData.link || "";
+		cardImage.alt = cardData.name || "";
+	}
 
-	deleteButton.addEventListener("click", onDelete);
+	if (cardTitle) {
+		cardTitle.textContent = cardData.name || "";
+	}
+
+	if (deleteButton && cardHandlers.onDelete) {
+		deleteButton.addEventListener("click", (evt) =>
+			cardHandlers.onDelete(evt, cardElement)
+		);
+	}
+
 	return cardElement;
-}
+};
 
-// должна быть отдельной функций, можно стрелочной
-function handleDeleteCard(evt) {
-	evt.target.closest(".card").remove();
-}
+const handleDeleteCard = (cardElement) => cardElement.remove();
 
-// можно сделать и через простой цикл
-initialCards.forEach((data) => {
-	placesWrap.append(createCardElement(data, handleDeleteCard));
-});
+export { createCardElement, handleDeleteCard };
