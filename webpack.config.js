@@ -17,6 +17,11 @@ module.exports = {
 		port: 8080,
 		open: true,
 	},
+	resolve: {
+		alias: {
+			"@images": path.resolve(__dirname, "src/images"),
+		},
+	},
 	module: {
 		rules: [
 			{
