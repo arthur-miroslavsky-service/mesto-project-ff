@@ -1,9 +1,9 @@
-const createCardElement = (params) => {
+const createCard = (params) => {
 	const {
 		cardTemplate,
 		cardSelectors = {},
-		cardData = {},
 		cardHandlers = {},
+		cardData = {},
 	} = params;
 
 	if (!(cardTemplate instanceof HTMLElement)) {
@@ -34,6 +34,29 @@ const createCardElement = (params) => {
 	return cardElement;
 };
 
+const addCard = (params) => {
+	const {
+		cardsContainer,
+		cardTemplate,
+		cardSelectors,
+		cardHandlers,
+		cardData,
+	} = params;
+
+	if (!(cardsContainer instanceof HTMLElement)) {
+		throw new Error("Incorrect type of cardsContainer element");
+	}
+
+	const newCard = createCard({
+		cardTemplate,
+		cardSelectors,
+		cardData,
+		cardHandlers,
+	});
+
+	cardsContainer.prepend(newCard);
+};
+
 const handleDeleteCard = (cardElement) => cardElement.remove();
 
-export { createCardElement, handleDeleteCard };
+export { createCard, handleDeleteCard, addCard };

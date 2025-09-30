@@ -1,7 +1,7 @@
 import "./styles/index.css";
 
 import { initialCards } from "./components/cards";
-import { createCardElement, handleDeleteCard } from "./components/card";
+import { createCard, handleDeleteCard, addCard } from "./components/card";
 import { openModal, closeModal } from "./components/modal";
 
 const cardTemplate = document
@@ -29,9 +29,13 @@ const profileForm = document.forms["edit-profile"];
 const profileFormNameInput = profileForm.elements.name;
 const profileFormDescriptionInput = profileForm.elements.description;
 
+const cardForm = document.forms["new-place"];
+const cardFormNameInput = cardForm.elements["place-name"];
+const cardFormLinkInput = cardForm.elements.link;
+
 initialCards.forEach((data) => {
 	placesWrap.append(
-		createCardElement({
+		createCard({
 			cardTemplate,
 			cardSelectors,
 			cardData: data,
@@ -40,17 +44,6 @@ initialCards.forEach((data) => {
 			},
 		})
 	);
-});
-
-profileEditBtn.addEventListener("click", () => {
-	profileFormNameInput.value = profileName.textContent;
-	profileFormDescriptionInput.value = profileJob.textContent;
-
-	openModal(profileEditPopup);
-});
-
-cardAddBtn.addEventListener("click", () => {
-	openModal(cardAddPopup);
 });
 
 document.querySelectorAll(".popup").forEach((popup) => {
@@ -70,4 +63,33 @@ const handleProfileFormSubmit = (evt) => {
 	closeModal(profileEditPopup);
 };
 
+const handleCardFormSubmit = (evt) => {
+	evt.preventDefault();
+
+	addCard({
+		cardsContainer: placesWrap,
+		cardTemplate,
+		cardSelectors,
+		cardData: {
+			name: cardFormNameInput.value,
+			link: cardFormLinkInput.value,
+		},
+	});
+
+	cardForm.reset();
+	closeModal(cardAddPopup);
+};
+
+profileEditBtn.addEventListener("click", () => {
+	profileFormNameInput.value = profileName.textContent;
+	profileFormDescriptionInput.value = profileJob.textContent;
+
+	openModal(profileEditPopup);
+});
+
+cardAddBtn.addEventListener("click", () => {
+	openModal(cardAddPopup);
+});
+
 profileForm.addEventListener("submit", handleProfileFormSubmit);
+cardForm.addEventListener("submit", handleCardFormSubmit);
