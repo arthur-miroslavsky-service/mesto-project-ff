@@ -16,11 +16,18 @@ const cardSelectors = {
 
 const placesWrap = document.querySelector(".places__list");
 
-const editProfileButton = document.querySelector(".profile__edit-button");
-const addCardButton = document.querySelector(".profile__add-button");
+const profileName = document.querySelector(".profile__title");
+const profileJob = document.querySelector(".profile__description");
 
-const editProfilePopup = document.querySelector(".popup_type_edit");
-const addCardPopup = document.querySelector(".popup_type_new-card");
+const profileEditBtn = document.querySelector(".profile__edit-button");
+const cardAddBtn = document.querySelector(".profile__add-button");
+
+const profileEditPopup = document.querySelector(".popup_type_edit");
+const cardAddPopup = document.querySelector(".popup_type_new-card");
+
+const profileForm = document.forms["edit-profile"];
+const profileFormNameInput = profileForm.elements.name;
+const profileFormDescriptionInput = profileForm.elements.description;
 
 initialCards.forEach((data) => {
 	placesWrap.append(
@@ -35,12 +42,15 @@ initialCards.forEach((data) => {
 	);
 });
 
-editProfileButton.addEventListener("click", () => {
-	openModal(editProfilePopup);
+profileEditBtn.addEventListener("click", () => {
+	profileFormNameInput.value = profileName.textContent;
+	profileFormDescriptionInput.value = profileJob.textContent;
+
+	openModal(profileEditPopup);
 });
 
-addCardButton.addEventListener("click", () => {
-	openModal(addCardPopup);
+cardAddBtn.addEventListener("click", () => {
+	openModal(cardAddPopup);
 });
 
 document.querySelectorAll(".popup").forEach((popup) => {
@@ -50,3 +60,14 @@ document.querySelectorAll(".popup").forEach((popup) => {
 		closeButton.addEventListener("click", () => closeModal(popup));
 	}
 });
+
+const handleProfileFormSubmit = (evt) => {
+	evt.preventDefault();
+
+	profileName.textContent = profileFormNameInput.value;
+	profileJob.textContent = profileFormDescriptionInput.value;
+
+	closeModal(profileEditPopup);
+};
+
+profileForm.addEventListener("submit", handleProfileFormSubmit);
