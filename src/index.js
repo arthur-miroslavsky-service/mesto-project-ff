@@ -1,7 +1,12 @@
 import "./styles/index.css";
 
 import { initialCards } from "./components/cards";
-import { createCard, handleDeleteCard, addCard } from "./components/card";
+import {
+	createCard,
+	addCard,
+	handleDeleteCard,
+	handleToggleLike,
+} from "./components/card";
 import { openModal, closeModal } from "./components/modal";
 
 const cardTemplate = document
@@ -9,9 +14,11 @@ const cardTemplate = document
 	.content.querySelector(".places__item");
 
 const cardSelectors = {
-	deleteButton: ".card__delete-button",
 	cardImage: ".card__image",
 	cardTitle: ".card__title",
+	deleteButton: ".card__delete-button",
+	likeButton: ".card__like-button",
+	activeLikeButton: "card__like-button_is-active",
 };
 
 const placesWrap = document.querySelector(".places__list");
@@ -41,6 +48,7 @@ initialCards.forEach((data) => {
 			cardData: data,
 			cardHandlers: {
 				onDelete: handleDeleteCard,
+				onToggleLike: handleToggleLike,
 			},
 		})
 	);

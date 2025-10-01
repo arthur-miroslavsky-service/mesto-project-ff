@@ -12,9 +12,10 @@ const createCard = (params) => {
 
 	const cardElement = cardTemplate.cloneNode(true);
 
-	const deleteButton = cardElement.querySelector(cardSelectors.deleteButton);
 	const cardImage = cardElement.querySelector(cardSelectors.cardImage);
 	const cardTitle = cardElement.querySelector(cardSelectors.cardTitle);
+	const deleteButton = cardElement.querySelector(cardSelectors.deleteButton);
+	const likeButton = cardElement.querySelector(cardSelectors.likeButton);
 
 	if (cardImage) {
 		cardImage.src = cardData.link || "";
@@ -26,8 +27,21 @@ const createCard = (params) => {
 	}
 
 	if (deleteButton && cardHandlers.onDelete) {
-		deleteButton.addEventListener("click", (evt) =>
-			cardHandlers.onDelete(evt, cardElement)
+		deleteButton.addEventListener("click", () =>
+			cardHandlers.onDelete(cardElement)
+		);
+	}
+
+	if (
+		likeButton &&
+		cardSelectors.activeLikeButton &&
+		cardHandlers.onToggleLike
+	) {
+		likeButton.addEventListener("click", () =>
+			cardHandlers.onToggleLike(
+				likeButton,
+				cardSelectors.activeLikeButton
+			)
 		);
 	}
 
@@ -59,4 +73,8 @@ const addCard = (params) => {
 
 const handleDeleteCard = (cardElement) => cardElement.remove();
 
-export { createCard, handleDeleteCard, addCard };
+const handleToggleLike = (likeBtn, activeClass) => {
+	likeBtn.classList.toggle(activeClass);
+};
+
+export { createCard, addCard, handleDeleteCard, handleToggleLike };
