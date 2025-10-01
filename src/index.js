@@ -23,9 +23,6 @@ const cardSelectors = {
 	deleteButton: ".card__delete-button",
 	likeButton: ".card__like-button",
 	activeLikeButton: "card__like-button_is-active",
-	imageModal: ".popup_type_image",
-	imageModalEl: ".popup__image",
-	imageModalCaption: ".popup__caption",
 };
 
 const placesWrap = document.querySelector(".places__list");
@@ -47,6 +44,10 @@ const cardForm = document.forms["new-place"];
 const cardFormNameInput = cardForm.elements["place-name"];
 const cardFormLinkInput = cardForm.elements.link;
 
+const imageModalContainer = document.querySelector(".popup_type_image");
+const imageModalImg = imageModalContainer.querySelector(".popup__image");
+const imageModalCaption = imageModalContainer.querySelector(".popup__caption");
+
 const getCardTemplateDefaultData = () => {
 	return {
 		cardTemplate,
@@ -56,6 +57,11 @@ const getCardTemplateDefaultData = () => {
 			onToggleLike: handleToggleLike,
 			onOpenImageModal: (params) =>
 				handleOpenImageModal(params, openModal),
+		},
+		imageModalElements: {
+			imageModalContainer,
+			imageModalImg,
+			imageModalCaption,
 		},
 	};
 };

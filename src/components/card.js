@@ -4,6 +4,7 @@ const createCard = (params) => {
 		cardSelectors = {},
 		cardHandlers = {},
 		cardData = {},
+		imageModalElements = {},
 	} = params;
 
 	if (!(cardTemplate instanceof HTMLElement)) {
@@ -16,12 +17,6 @@ const createCard = (params) => {
 	const cardTitle = cardElement.querySelector(cardSelectors.cardTitle);
 	const deleteButton = cardElement.querySelector(cardSelectors.deleteButton);
 	const likeButton = cardElement.querySelector(cardSelectors.likeButton);
-
-	const imageModal = document.querySelector(cardSelectors.imageModal);
-	const imageModalEl = imageModal.querySelector(cardSelectors.imageModalEl);
-	const imageModalCaption = imageModal.querySelector(
-		cardSelectors.imageModalCaption
-	);
 
 	if (cardImage) {
 		cardImage.src = cardData.link || "";
@@ -53,9 +48,9 @@ const createCard = (params) => {
 
 	const isReadyToOpenImageModal = [
 		cardImage,
-		imageModal,
-		imageModalEl,
-		imageModalCaption,
+		imageModalElements.imageModalContainer,
+		imageModalElements.imageModalImg,
+		imageModalElements.imageModalCaption,
 		cardHandlers.onOpenImageModal,
 	].every((item) => item);
 
@@ -63,9 +58,9 @@ const createCard = (params) => {
 		cardImage.addEventListener("click", () =>
 			cardHandlers.onOpenImageModal({
 				modalElements: {
-					modalElement: imageModal,
-					modalImageElement: imageModalEl,
-					modalCaptionElement: imageModalCaption,
+					modalContainer: imageModalElements.imageModalContainer,
+					modalImg: imageModalElements.imageModalImg,
+					modalCaption: imageModalElements.imageModalCaption,
 				},
 				modalData: {
 					src: cardData.link,
@@ -86,6 +81,7 @@ const addCard = (params) => {
 		cardSelectors,
 		cardHandlers,
 		cardData,
+		imageModalElements,
 	} = params;
 
 	if (!(cardsContainer instanceof HTMLElement)) {
@@ -97,6 +93,7 @@ const addCard = (params) => {
 		cardSelectors,
 		cardData,
 		cardHandlers,
+		imageModalElements,
 	});
 
 	cardsContainer.prepend(newCard);

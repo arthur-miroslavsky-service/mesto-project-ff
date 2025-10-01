@@ -30,15 +30,14 @@ const closeModal = (modalElement) => {
 
 const handleOpenImageModal = (params, openModalFunction) => {
 	const { modalElements = {}, modalData = {} } = params;
-	const { modalElement, modalImageElement, modalCaptionElement } =
-		modalElements;
+	const { modalContainer, modalImg, modalCaption } = modalElements;
 
-	modalImageElement.src = modalData.src || "";
-	modalImageElement.alt = modalData.alt || "";
-	modalCaptionElement.textContent = modalData.name || "";
+	modalImg.src = modalData.src || "";
+	modalImg.alt = modalData.alt || "";
+	modalCaption.textContent = modalData.name || "";
 
 	if (openModalFunction) {
-		openModalFunction(modalElement);
+		openModalFunction(modalContainer);
 	}
 };
 
