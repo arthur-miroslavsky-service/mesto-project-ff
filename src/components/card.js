@@ -4,7 +4,6 @@ const createCard = (params) => {
 		cardSelectors = {},
 		cardHandlers = {},
 		cardData = {},
-		imageModalElements = {},
 	} = params;
 
 	if (!(cardTemplate instanceof HTMLElement)) {
@@ -46,27 +45,12 @@ const createCard = (params) => {
 		);
 	}
 
-	const isReadyToOpenImageModal = [
-		cardImage,
-		imageModalElements.imageModalContainer,
-		imageModalElements.imageModalImg,
-		imageModalElements.imageModalCaption,
-		cardHandlers.onOpenImageModal,
-	].every((item) => item);
-
-	if (isReadyToOpenImageModal) {
+	if (cardImage && cardHandlers.onOpenImageModal) {
 		cardImage.addEventListener("click", () =>
 			cardHandlers.onOpenImageModal({
-				modalElements: {
-					modalContainer: imageModalElements.imageModalContainer,
-					modalImg: imageModalElements.imageModalImg,
-					modalCaption: imageModalElements.imageModalCaption,
-				},
-				modalData: {
-					src: cardData.link,
-					alt: cardData.name,
-					name: cardData.name,
-				},
+				src: cardData.link,
+				alt: cardData.name,
+				name: cardData.name,
 			})
 		);
 	}

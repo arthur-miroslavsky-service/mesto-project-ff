@@ -6,11 +6,7 @@ import {
 	handleDeleteCard,
 	handleToggleLike,
 } from "./components/card";
-import {
-	openModal,
-	handleOpenImageModal,
-	closeModal,
-} from "./components/modal";
+import { openModal, closeModal } from "./components/modal";
 
 const cardTemplate = document
 	.querySelector("#card-template")
@@ -47,6 +43,14 @@ const imageModalContainer = document.querySelector(".popup_type_image");
 const imageModalImg = imageModalContainer.querySelector(".popup__image");
 const imageModalCaption = imageModalContainer.querySelector(".popup__caption");
 
+const handleOpenImageModal = (data = {}) => {
+	imageModalImg.src = data.src || "";
+	imageModalImg.alt = data.alt || "";
+	imageModalCaption.textContent = data.name || "";
+
+	openModal(imageModalContainer);
+};
+
 const getCardTemplateDefaultData = () => {
 	return {
 		cardTemplate,
@@ -54,13 +58,7 @@ const getCardTemplateDefaultData = () => {
 		cardHandlers: {
 			onDelete: handleDeleteCard,
 			onToggleLike: handleToggleLike,
-			onOpenImageModal: (params) =>
-				handleOpenImageModal(params, openModal),
-		},
-		imageModalElements: {
-			imageModalContainer,
-			imageModalImg,
-			imageModalCaption,
+			onOpenImageModal: handleOpenImageModal,
 		},
 	};
 };
@@ -77,20 +75,6 @@ const addCard = (data) => {
 
 	placesWrap.prepend(newCard);
 };
-
-initialCards.forEach((data) =>
-	placesWrap.append(
-		createCard({ ...getCardTemplateDefaultData(), cardData: data })
-	)
-);
-
-document.querySelectorAll(".popup").forEach((modal) => {
-	const closeButton = modal.querySelector(".popup__close");
-
-	if (closeButton) {
-		closeButton.addEventListener("click", () => closeModal(modal));
-	}
-});
 
 const handleProfileFormSubmit = (evt) => {
 	evt.preventDefault();
@@ -112,6 +96,20 @@ const handleCardFormSubmit = (evt) => {
 	cardForm.reset();
 	closeModal(cardAddModal);
 };
+
+initialCards.forEach((data) =>
+	placesWrap.append(
+		createCard({ ...getCardTemplateDefaultData(), cardData: data })
+	)
+);
+
+document.querySelectorAll(".popup").forEach((modal) => {
+	const closeButton = modal.querySelector(".popup__close");
+
+	if (closeButton) {
+		closeButton.addEventListener("click", () => closeModal(modal));
+	}
+});
 
 profileEditBtn.addEventListener("click", () => {
 	profileFormNameInput.value = profileName.textContent;

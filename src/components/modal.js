@@ -28,17 +28,4 @@ const closeModal = (modalElement) => {
 	modalElement.removeEventListener("mousedown", handleCloseByOverlay);
 };
 
-const handleOpenImageModal = (params, openModalFunction) => {
-	const { modalElements = {}, modalData = {} } = params;
-	const { modalContainer, modalImg, modalCaption } = modalElements;
-
-	modalImg.src = modalData.src || "";
-	modalImg.alt = modalData.alt || "";
-	modalCaption.textContent = modalData.name || "";
-
-	if (openModalFunction) {
-		openModalFunction(modalContainer);
-	}
-};
-
-export { openModal, handleOpenImageModal, closeModal };
+export { openModal, closeModal };
