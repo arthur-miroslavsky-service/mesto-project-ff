@@ -1,9 +1,9 @@
 const handleCloseByEsc = (evt) => {
 	if (evt.key === "Escape") {
-		const openedPopup = document.querySelector(".popup_is-opened");
+		const openedModal = document.querySelector(".popup_is-opened");
 
-		if (openedPopup) {
-			closeModal(openedPopup);
+		if (openedModal) {
+			closeModal(openedModal);
 		}
 	}
 };
@@ -14,18 +14,32 @@ const handleCloseByOverlay = (evt) => {
 	}
 };
 
-const openModal = (popup) => {
-	popup.classList.add("popup_is-opened", "popup_is-animated");
+const openModal = (modalElement) => {
+	modalElement.classList.add("popup_is-opened", "popup_is-animated");
 
 	document.addEventListener("keydown", handleCloseByEsc);
-	popup.addEventListener("mousedown", handleCloseByOverlay);
+	modalElement.addEventListener("mousedown", handleCloseByOverlay);
 };
 
-const closeModal = (popup) => {
-	popup.classList.remove("popup_is-opened");
+const closeModal = (modalElement) => {
+	modalElement.classList.remove("popup_is-opened");
 
 	document.removeEventListener("keydown", handleCloseByEsc);
-	popup.removeEventListener("mousedown", handleCloseByOverlay);
+	modalElement.removeEventListener("mousedown", handleCloseByOverlay);
 };
 
-export { openModal, closeModal };
+const handleOpenImageModal = (params, openModalFunction) => {
+	const { modalElements = {}, modalData = {} } = params;
+	const { modalElement, modalImageElement, modalCaptionElement } =
+		modalElements;
+
+	modalImageElement.src = modalData.src || "";
+	modalImageElement.alt = modalData.alt || "";
+	modalCaptionElement.textContent = modalData.name || "";
+
+	if (openModalFunction) {
+		openModalFunction(modalElement);
+	}
+};
+
+export { openModal, handleOpenImageModal, closeModal };

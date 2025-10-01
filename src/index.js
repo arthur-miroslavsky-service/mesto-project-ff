@@ -7,7 +7,11 @@ import {
 	handleDeleteCard,
 	handleToggleLike,
 } from "./components/card";
-import { openModal, closeModal } from "./components/modal";
+import {
+	openModal,
+	handleOpenImageModal,
+	closeModal,
+} from "./components/modal";
 
 const cardTemplate = document
 	.querySelector("#card-template")
@@ -19,6 +23,9 @@ const cardSelectors = {
 	deleteButton: ".card__delete-button",
 	likeButton: ".card__like-button",
 	activeLikeButton: "card__like-button_is-active",
+	imageModal: ".popup_type_image",
+	imageModalEl: ".popup__image",
+	imageModalCaption: ".popup__caption",
 };
 
 const placesWrap = document.querySelector(".places__list");
@@ -29,8 +36,8 @@ const profileJob = document.querySelector(".profile__description");
 const profileEditBtn = document.querySelector(".profile__edit-button");
 const cardAddBtn = document.querySelector(".profile__add-button");
 
-const profileEditPopup = document.querySelector(".popup_type_edit");
-const cardAddPopup = document.querySelector(".popup_type_new-card");
+const profileEditModal = document.querySelector(".popup_type_edit");
+const cardAddModal = document.querySelector(".popup_type_new-card");
 
 const profileForm = document.forms["edit-profile"];
 const profileFormNameInput = profileForm.elements.name;
@@ -40,25 +47,30 @@ const cardForm = document.forms["new-place"];
 const cardFormNameInput = cardForm.elements["place-name"];
 const cardFormLinkInput = cardForm.elements.link;
 
-initialCards.forEach((data) => {
-	placesWrap.append(
-		createCard({
-			cardTemplate,
-			cardSelectors,
-			cardData: data,
-			cardHandlers: {
-				onDelete: handleDeleteCard,
-				onToggleLike: handleToggleLike,
-			},
-		})
-	);
-});
+const getCardTemplateDefaultData = () => {
+	return {
+		cardTemplate,
+		cardSelectors,
+		cardHandlers: {
+			onDelete: handleDeleteCard,
+			onToggleLike: handleToggleLike,
+			onOpenImageModal: (params) =>
+				handleOpenImageModal(params, openModal),
+		},
+	};
+};
 
-document.querySelectorAll(".popup").forEach((popup) => {
-	const closeButton = popup.querySelector(".popup__close");
+initialCards.forEach((data) =>
+	placesWrap.append(
+		createCard({ ...getCardTemplateDefaultData(), cardData: data })
+	)
+);
+
+document.querySelectorAll(".popup").forEach((modal) => {
+	const closeButton = modal.querySelector(".popup__close");
 
 	if (closeButton) {
-		closeButton.addEventListener("click", () => closeModal(popup));
+		closeButton.addEventListener("click", () => closeModal(modal));
 	}
 });
 
@@ -68,16 +80,15 @@ const handleProfileFormSubmit = (evt) => {
 	profileName.textContent = profileFormNameInput.value;
 	profileJob.textContent = profileFormDescriptionInput.value;
 
-	closeModal(profileEditPopup);
+	closeModal(profileEditModal);
 };
 
 const handleCardFormSubmit = (evt) => {
 	evt.preventDefault();
 
 	addCard({
+		...getCardTemplateDefaultData(),
 		cardsContainer: placesWrap,
-		cardTemplate,
-		cardSelectors,
 		cardData: {
 			name: cardFormNameInput.value,
 			link: cardFormLinkInput.value,
@@ -85,18 +96,18 @@ const handleCardFormSubmit = (evt) => {
 	});
 
 	cardForm.reset();
-	closeModal(cardAddPopup);
+	closeModal(cardAddModal);
 };
 
 profileEditBtn.addEventListener("click", () => {
 	profileFormNameInput.value = profileName.textContent;
 	profileFormDescriptionInput.value = profileJob.textContent;
 
-	openModal(profileEditPopup);
+	openModal(profileEditModal);
 });
 
 cardAddBtn.addEventListener("click", () => {
-	openModal(cardAddPopup);
+	openModal(cardAddModal);
 });
 
 profileForm.addEventListener("submit", handleProfileFormSubmit);

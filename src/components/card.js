@@ -17,6 +17,12 @@ const createCard = (params) => {
 	const deleteButton = cardElement.querySelector(cardSelectors.deleteButton);
 	const likeButton = cardElement.querySelector(cardSelectors.likeButton);
 
+	const imageModal = document.querySelector(cardSelectors.imageModal);
+	const imageModalEl = imageModal.querySelector(cardSelectors.imageModalEl);
+	const imageModalCaption = imageModal.querySelector(
+		cardSelectors.imageModalCaption
+	);
+
 	if (cardImage) {
 		cardImage.src = cardData.link || "";
 		cardImage.alt = cardData.name || "";
@@ -42,6 +48,31 @@ const createCard = (params) => {
 				likeButton,
 				cardSelectors.activeLikeButton
 			)
+		);
+	}
+
+	const isReadyToOpenImageModal = [
+		cardImage,
+		imageModal,
+		imageModalEl,
+		imageModalCaption,
+		cardHandlers.onOpenImageModal,
+	].every((item) => item);
+
+	if (isReadyToOpenImageModal) {
+		cardImage.addEventListener("click", () =>
+			cardHandlers.onOpenImageModal({
+				modalElements: {
+					modalElement: imageModal,
+					modalImageElement: imageModalEl,
+					modalCaptionElement: imageModalCaption,
+				},
+				modalData: {
+					src: cardData.link,
+					alt: cardData.name,
+					name: cardData.name,
+				},
+			})
 		);
 	}
 
