@@ -74,35 +74,10 @@ const createCard = (params) => {
 	return cardElement;
 };
 
-const addCard = (params) => {
-	const {
-		cardsContainer,
-		cardTemplate,
-		cardSelectors,
-		cardHandlers,
-		cardData,
-		imageModalElements,
-	} = params;
-
-	if (!(cardsContainer instanceof HTMLElement)) {
-		throw new Error("Incorrect type of cardsContainer element");
-	}
-
-	const newCard = createCard({
-		cardTemplate,
-		cardSelectors,
-		cardData,
-		cardHandlers,
-		imageModalElements,
-	});
-
-	cardsContainer.prepend(newCard);
-};
-
 const handleDeleteCard = (cardElement) => cardElement.remove();
 
 const handleToggleLike = (likeBtn, activeClass) => {
 	likeBtn.classList.toggle(activeClass);
 };
 
-export { createCard, addCard, handleDeleteCard, handleToggleLike };
+export { createCard, handleDeleteCard, handleToggleLike };

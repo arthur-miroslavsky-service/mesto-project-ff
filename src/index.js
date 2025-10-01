@@ -3,7 +3,6 @@ import "./styles/index.css";
 import { initialCards } from "./components/cards";
 import {
 	createCard,
-	addCard,
 	handleDeleteCard,
 	handleToggleLike,
 } from "./components/card";
@@ -66,6 +65,19 @@ const getCardTemplateDefaultData = () => {
 	};
 };
 
+const addCard = (data) => {
+	if (!(placesWrap instanceof HTMLElement)) {
+		throw new Error("Incorrect type of placesWrap element");
+	}
+
+	const newCard = createCard({
+		...getCardTemplateDefaultData(),
+		cardData: data,
+	});
+
+	placesWrap.prepend(newCard);
+};
+
 initialCards.forEach((data) =>
 	placesWrap.append(
 		createCard({ ...getCardTemplateDefaultData(), cardData: data })
@@ -93,12 +105,8 @@ const handleCardFormSubmit = (evt) => {
 	evt.preventDefault();
 
 	addCard({
-		...getCardTemplateDefaultData(),
-		cardsContainer: placesWrap,
-		cardData: {
-			name: cardFormNameInput.value,
-			link: cardFormLinkInput.value,
-		},
+		name: cardFormNameInput.value,
+		link: cardFormLinkInput.value,
 	});
 
 	cardForm.reset();
